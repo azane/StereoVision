@@ -158,15 +158,15 @@ class StereoCalibrator(object):
                           30, 0.01))
         return corners
 
-    def _show_corners(self, image, corners):
+    def _draw_corners(self, image, corners):
         """Show chessboard corners found in image."""
         temp = image
         cv2.drawChessboardCorners(temp, (self.rows, self.columns), corners,
                                   True)
-        window_name = "Chessboard"
-        cv2.imshow(window_name, temp)
-        if cv2.waitKey(0):
-            cv2.destroyWindow(window_name)
+        # window_name = "Chessboard"
+        # cv2.imshow(window_name, temp)
+        # if cv2.waitKey(0):
+        #     cv2.destroyWindow(window_name)
 
     def __init__(self, rows, columns, square_size, image_size):
         """
@@ -198,7 +198,7 @@ class StereoCalibrator(object):
         #: and right camera, respectively
         self.image_points = {"left": [], "right": []}
 
-    def add_corners(self, image_pair, show_results=False):
+    def add_corners(self, image_pair, draw_results=False):
         """
         Record chessboard corners found in an image pair.
 
@@ -209,8 +209,8 @@ class StereoCalibrator(object):
         self.object_points.append(self.corner_coordinates)
         for image in image_pair:
             corners = self._get_corners(image)
-            if show_results:
-                self._show_corners(image, corners)
+            if draw_results:
+                self._draw_corners(image, corners)
             self.image_points[side].append(corners.reshape(-1, 2))
             side = "right"
             self.image_count += 1

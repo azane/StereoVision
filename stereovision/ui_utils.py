@@ -93,15 +93,25 @@ def calibrate_folder(args):
     calibrator = StereoCalibrator(args.rows, args.columns, args.square_size,
                                   (width, height))
     progress = ProgressBar(maxval=len(args.input_files),
-                          widgets=[Bar("=", "[", "]"),
-                          " ", Percentage()])
+                           widgets=[Bar("=", "[", "]"),
+                           " ", Percentage()])
     print("Reading input files...")
     progress.start()
     while args.input_files:
         left, right = args.input_files[:2]
         img_left, im_right = cv2.imread(left), cv2.imread(right)
         calibrator.add_corners((img_left, im_right),
-                               show_results=args.show_chessboards)
+                               draw_results=args.show_chessboards)
+
+        cv2.imshow("left_chessboard", img_left)
+        cv2.imshow("right_chessboard", im_right)
+        while True:
+            key = cv2.waitKey(30) & 0xff
+            if key == 27:  # esc
+                break
+        cv2.destroyWindow("left_chessboard")
+        cv2.destroyWindow("right_chessboard")
+
         args.input_files = args.input_files[2:]
         progress.update(progress.maxval - len(args.input_files))
 
