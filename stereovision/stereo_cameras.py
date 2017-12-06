@@ -28,7 +28,6 @@ Classes:
 
 .. image:: classes_stereo_cameras.svg
 """
-
 import cv2
 
 from stereovision.point_cloud import PointCloud
